@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container-fluid col text-center mt-2">
+        <h2>Search Book</h2>
+    </div>
+    <div class="container-fluid border border-dark w-50 p-3 mt-5">
+        <form method="POST" action="index">
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="item">Search</label>
+                <input type="text" id="item" name="item" class="form-control" />
+            </div>
+
+            <div class="col text-center">
+                <input type="submit" class="btn btn-primary text-center" value="Search" name="search">
+            </div>
+        </form>
+    </div>
+
+    <?php
+    error_reporting(0);
+    $html = "";
+    foreach ($data as $value) {
+        $html .= '<div class="d-flex my-4 border p-3">
+            <img class="card-img-top" style="width: 14rem; height: 16rem" src="//covers.openlibrary.org/b/olid/' . $value['cover_edition_key'] . '.jpg" alt="Card image cap">
+            <div class="card-body">
+              <p class="card-text"><b>' . $value['title'] . '</b></p>
+              <p class="card-text"><b>by</b>&nbsp;' . implode(', ', $value['author_name']) . '</p>
+              <p class="card-text"><b>First Publish</b>&nbsp;' . $value['first_publish_year'] . '</p>
+              <p class="card-text"><b>Total Editions</b>&nbsp;' . $value['edition_count'] . '</p>
+              <a href="index/bookdetail?id='.$value['isbn'][0].'&img='.$value['cover_edition_key'].'" class="btn btn-success">Want to read</a>
+          </div>
+          </div>';
+    }
+    echo $html;
+    ?>
+</body>
+
+</html>
