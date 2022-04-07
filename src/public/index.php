@@ -11,6 +11,8 @@ use Phalcon\Url;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Config;
 
+require '../vendor/autoload.php';
+
 $config = new Config([]);
 
 // Define some absolute path constants to aid in locating resources

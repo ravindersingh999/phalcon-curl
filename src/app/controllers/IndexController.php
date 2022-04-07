@@ -1,6 +1,7 @@
 <?php
 
 use Phalcon\Mvc\Controller;
+use GuzzleHttp\Client;
 
 
 class IndexController extends Controller
@@ -11,18 +12,14 @@ class IndexController extends Controller
         $temp = explode(" ", $name);
         $item = implode("+", $temp);
 
-        $url = "https://openlibrary.org/search.json?q=$item&mode=ebooks&has_fulltext=true";
+        $client = new Client([
+            'base_uri' => 'https://openlibrary.org/',
+        ]);
 
-        // Initialize a CURL session.
-        $ch = curl_init($url);
-
-        //grab URL and pass it to the variable.
-        // curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $response = json_decode(curl_exec($ch), true);
+        $response = $client->request('GET', 'search.json?q=' . $item . '&mode=ebooks&has_fulltext=true');
+        $response = json_decode($response->getbody(), true);
 
         $this->view->data = $response['docs'];
-
 
         // echo '<pre>';
         // print_r($response);
@@ -34,19 +31,20 @@ class IndexController extends Controller
     {
         $id = $this->request->get('id');
         $image = $this->request->get('img');
-        
-        $url = "https://openlibrary.org/api/books?bibkeys=ISBN:".$id."&jscmd=details&format=json ";
 
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $response = json_decode(curl_exec($ch), true);
-        
+        $client = new Client([
+            'base_uri' => 'https://openlibrary.org/',
+        ]);
+
+        $response = $client->request('GET', 'api/books?bibkeys=ISBN:'.$id.'&jscmd=details&format=json');
+        $response = json_decode($response->getbody(), true);
+
         // echo '<pre>';
         // print_r($response['ISBN:'.$id.'']['details']);
         // echo '</pre>';
         // die;
         $this->view->img = $image;
-        $this->view->data = $response['ISBN:'.$id.'']['details'];
-        $this->view->gid = $response['ISBN:'.$id.'']['details']['identifiers']['google'][0];
+        $this->view->data = $response['ISBN:' . $id . '']['details'];
+        $this->view->gid = $response['ISBN:' . $id . '']['details']['identifiers']['google'][0];
     }
 }

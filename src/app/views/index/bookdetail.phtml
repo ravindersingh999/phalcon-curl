@@ -26,11 +26,11 @@
         <p class="lead "><b>Publishers:</b>&nbsp;' . $data['publishers'][0] . '</p>
         <p class="lead "><b>Published On:</b>&nbsp;' . $data['publish_date'] . '</p>
         <div class="d-flex">';
-        if (!empty($gid)) {
-        $html .= '<a class="btn btn-success" href="https://www.google.co.in/books/edition/_/'.$gid.'?hl=en">Open From Google</a>
+                if (!empty($gid)) {
+                    $html .= '<a class="btn btn-success" href="https://www.google.co.in/books/edition/_/' . $gid . '?hl=en">Open From Google</a>
         </div>
     </div>';
-        }
+                }
                 ?>
                 <?php echo $html; ?>
             </div>
